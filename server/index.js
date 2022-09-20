@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const querystring = require('querystring');
+const queryString = require('query-string');
 const axios = require('axios');
 const port = 8888;
 const app = express();
@@ -29,7 +29,8 @@ const generateRandomString = (length) => {
 app.get('/login', (req, res) => {
   const state = generateRandomString(16);
   res.cookie(stateKey, state);
-  const queryParams = querystring.stringify({
+  const scope = ['user-read-private', 'user-read-email', 'user-top-read'].join( ' ');
+  const queryParams = queryString.stringify({
     client_id: CLIENT_ID,
     response_type: 'code',
     redirect_uri: REDIRECT_URI,
@@ -45,7 +46,7 @@ app.get('/callback', (req, res) => {
   axios({
     method: 'post',
     url: 'https://accounts.spotify.com/api/token',
-    data: querystring.stringify({
+    data: queryString.stringify({
       grant_type: 'authorization_code',
       code: code,
       redirect_uri: REDIRECT_URI,
@@ -56,23 +57,23 @@ app.get('/callback', (req, res) => {
         `${CLIENT_ID}:${CLIENT_SECRET}`
       ).toString('base64')}`,
     },
-  }).then((response) => {
-    if (response.status === 200) {
-      const { access_token, refresh_token } = response.data;
-
-      const queryParams = querystring.stringify({
-        access_token,
-        refresh_token,
-      });
-      res.redirect(`http://127.0.0.1:5173/?${queryParams}`)
-    } else {
-      res.redirect(`/?${querystring.stringify({ error: 'invalid_token' })}`); 
-    }
-    
   })
-  .catch((error) => {
-    res.send(error);
-  });
+    .then((response) => {
+      if (response.status === 200) {
+        const { access_token, refresh_token, expires_in } = response.data;
+        const queryParams = queryString.stringify({
+          access_token,
+          refresh_token,
+          expires_in,
+        });
+        res.redirect(`http://127.0.0.1:5173/?${queryParams}`);
+      } else {
+        res.redirect(`/?${queryString.stringify({ error: 'invalid_token' })}`);
+      }
+    })
+    .catch((error) => {
+      res.send(error);
+    });
 });
 
 app.get('/refresh_token', (req, res) => {
@@ -81,7 +82,7 @@ app.get('/refresh_token', (req, res) => {
   axios({
     method: 'post',
     url: 'https://accounts.spotify.com/api/token',
-    data: querystring.stringify({
+    data: queryString.stringify({
       grant_type: 'refresh_token',
       refresh_token: refresh_token,
     }),
@@ -93,7 +94,7 @@ app.get('/refresh_token', (req, res) => {
     },
   })
     .then((response) => {
-      res.send(`<pre>${JSON.stringify(response.data, null, 2)}</pre>`);
+      res.send(res.json(response.data));
     })
     .catch((error) => {
       res.send(error);
