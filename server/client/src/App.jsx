@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Login, Profile, Playlist } from './Componets.jsx';
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  useLocation,
-} from 'react-router-dom';
+import { Login, Profile, Playlist, Sidebar } from './Componets.jsx';
+import MainRoutes from './Routes.jsx';
+
 import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 import { accessToken, logout } from './Spotify';
 
@@ -33,16 +29,10 @@ function App() {
         </>
       ) : (
         <>
-          <Router>
-            <ScrollToTop />
-            <Routes>
-              <Route path='/top-artists' element={<h1>Top Artist</h1>} />
-              <Route path='/top-tracks' element={<></>} />
-              <Route path='/playlists/:id' element={<></>} />
-              <Route path='/playlists' element={<Playlist />} />
-              <Route path='/' element={<Profile />} />
-            </Routes>
-          </Router>
+          <div className='h-screen w-full bg-textgray relative flex overflow-hidden '>
+            <Sidebar />
+            <MainRoutes />
+          </div>
         </>
       )}
     </div>
