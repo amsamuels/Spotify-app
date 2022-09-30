@@ -3,3 +3,17 @@
  * @param {function} fn an async function
  * @returns {function}
  */
+ export const catchErrors = fn => {
+    return function(...args) {
+      return fn(...args).catch((err) => {
+        console.error(err);
+      })
+    }
+  }
+
+  export const formatDuration = millis => {
+   
+    const minutes = Math.floor((millis/1000/60) % 60)
+    const seconds = ((millis % 60000) / 1000).toFixed(0);
+    return `${minutes}:${seconds < 10 ? '0':''}${seconds}`
+  }

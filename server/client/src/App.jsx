@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Login, Profile, Playlist, Sidebar } from './Componets.jsx';
-import MainRoutes from './Routes.jsx';
+import {Login, Sidebar} from './Components/index'
 
-import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
-import { accessToken, logout } from './Spotify';
+import Main from './Routes.jsx';
+import { accessToken } from './Spotify';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -29,9 +28,9 @@ function App() {
         </>
       ) : (
         <>
-          <div className='h-screen w-full bg-textgray relative flex overflow-hidden '>
+          <div className=' min-h-screen min-w-screen bg-textgray relative flex '>
             <Sidebar />
-            <MainRoutes />
+            <Main />
           </div>
         </>
       )}

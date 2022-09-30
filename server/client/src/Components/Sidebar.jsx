@@ -7,11 +7,12 @@ import {
   UserIcon,
   MicrophoneIcon,
   MusicalNoteIcon,
+  ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/solid';
 import { images } from '../constants';
 
 const Sidebar = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const routes = [
     {
@@ -42,13 +43,19 @@ const Sidebar = () => {
         <PlayIcon className='h-8 w-8 fill-current text-textgray group-hover:text-textwhite' />
       ),
     },
+    {
+      name: 'Logout',
+      icon: (
+        <button onClick={logout}>
+          <ArrowRightOnRectangleIcon className='h-8 w-8 fill-current text-textgray group-hover:text-textwhite' />
+        </button>
+      ),
+    },
   ];
 
-  const sideBar = routes.map(({ name, path, icon }) => (
+  const sideBar = routes.map(({ name, path, icon, gap }) => (
     <Link
-      className={`flex  rounded-md p-2 cursor-pointer hover:bg-textwhite text-textgray  text-base items-center gap-x-4   ${
-        name.gap ? 'mt-9' : 'mt-2'
-      }}`}
+      className={`flex  rounded-md p-2 cursor-pointer hover:bg-textwhite text-textgray  text-base items-center gap-x-4 mt-2 `}
       key={name}
       to={path}
     >
@@ -64,7 +71,7 @@ const Sidebar = () => {
       <div
         className={` ${
           open ? 'w-72' : 'w-20 '
-        } bg-myblack h-screen p-5  pt-8 relative duration-300`}
+        } bg-myblack h-full p-5  pt-8 relative duration-300`}
       >
         <ChevronDoubleLeftIcon
           className={`absolute cursor-pointer -right-3 top-9 w-7 stroke-current stroke-1 bg-textgray border-textwhite
@@ -80,7 +87,7 @@ const Sidebar = () => {
             }`}
           />
           <h1
-            className={`text-white origin-left font-medium text-xl duration-200 ${
+            className={`text-textgreen font-nav origin-left font-bold text-xl duration-200 ${
               !open && 'scale-0'
             }`}
           >

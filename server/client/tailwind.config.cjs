@@ -6,7 +6,8 @@ module.exports = {
      'myblack': '#040306',
      'mainBG':'#181818',
      'textgray': '#6b6a6b',
-     'textwhite': '#ffffff'
+     'textwhite': '#ffffff',
+     'textgreen': '#1db954'
     },
     extend: {},
     fontFamily: {

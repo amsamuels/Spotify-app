@@ -143,6 +143,17 @@ export const getCurrentUserProfile = () => axios.get('/me');
 export const getCurrentUserplaylist = (limit = 20) => {
   return axios.get(`/me/playlists?limit=${limit}`);
 };
-export const getUserTopArtist = (limit = 25, time_range = 'short_term') => {
+export const getUserTopTenArtist = (limit = 10, time_range = 'long_term') => {
   return axios.get(`/me/top/artists?limit=${limit}&time_range=${time_range}`);
+};
+export const getUserTopTenTrack = (limit = 10, time_range = 'long_term') => {
+  return axios.get(`/me/top/tracks?limit=${limit}&time_range=${time_range}`);
+};
+
+export const getFollowing = (type = 'artist') => {
+  return axios.get(`/me/following?type=${type}`);
+};
+
+export const getArtist = (artistID) => {
+  return axios.get(`/me/artists/${artistID}`);
 };
